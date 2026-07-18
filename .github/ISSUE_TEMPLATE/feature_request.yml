@@ -1,0 +1,43 @@
+name: Feature request
+description: Propose an improvement that respects Cenro's local-first safety model.
+title: "feature: "
+labels: [enhancement, needs-triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: Start with the user outcome, not a specific implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed experience
+      description: Describe the ideal workflow and what the user should be able to see or approve.
+    validations:
+      required: true
+  - type: dropdown
+    id: boundary
+    attributes:
+      label: Does it touch a data or execution boundary?
+      options:
+        - No, it stays local and read-only
+        - It reads local workspace content
+        - It writes local workspace content
+        - It uses the web or a cloud provider
+        - It proposes or runs terminal commands
+        - I am not sure
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: code
+    attributes:
+      label: Community agreement
+      options:
+        - label: I will not include keys, private workspace content, or personal data.
+          required: true

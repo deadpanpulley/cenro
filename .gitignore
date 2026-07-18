@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+release/
+release-gateway/
+.vercel/
+site/node_modules/
+site/dist/

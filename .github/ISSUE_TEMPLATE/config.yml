@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: mailto:security@cenro.dev
+    about: Please report vulnerabilities privately, not in a public issue.
+  - name: Community conduct report
+    url: mailto:conduct@cenro.dev
+    about: Report conduct concerns privately.

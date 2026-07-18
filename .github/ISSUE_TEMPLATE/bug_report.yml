@@ -1,0 +1,61 @@
+name: Bug report
+description: Help us reproduce a problem in Cenro.
+title: "bug: "
+labels: [bug, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve Cenro. Please remove API keys, private file contents, and any personal data before submitting.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and the expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Ask Cenro to ...
+        4. Observe ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Cenro version or commit
+      placeholder: 0.1.0 or abc1234
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Onboarding or local models
+        - Smart Switch or route receipt
+        - Workspace or diff review
+        - Playbooks or team workflow
+        - Provider consent
+        - Terminal
+        - Website or documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Safe diagnostic context
+      description: OS version, non-sensitive logs, model tag, and screenshots with private information redacted are helpful.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed keys, private workspace content, and personal data from this report.
+          required: true

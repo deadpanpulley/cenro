@@ -1,0 +1,25 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="640" fill="#F7F7F4"/>
+  <circle cx="1068" cy="135" r="277" fill="#C8F267" fill-opacity=".52"/>
+  <circle cx="1164" cy="530" r="307" fill="#DDE5FF"/>
+  <path d="M0 520C223 442 298 674 526 568C736 469 815 412 1280 536V640H0V520Z" fill="#ECEEE8"/>
+  <g transform="translate(94 93)">
+    <rect width="62" height="62" rx="17" fill="#F7F8FA"/>
+    <path d="M12 17.5C20.5 17.5 22.5 21.7 27.7 28.6" stroke="#1B5FE9" stroke-width="7" stroke-linecap="round"/>
+    <path d="M12 46.5C20.5 46.5 22.5 42.3 27.7 35.4" stroke="#1B5FE9" stroke-width="7" stroke-linecap="round"/>
+    <path d="M36.3 32H52" stroke="#1B5FE9" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="32" cy="32" r="8.5" fill="#F8FFFF" stroke="#1B5FE9" stroke-width="4"/>
+    <circle cx="32" cy="32" r="3.2" fill="#61D7C4"/>
+  </g>
+  <text x="176" y="133" fill="#151515" font-family="Arial, sans-serif" font-size="43" font-weight="700" letter-spacing="-2">Cenro</text>
+  <text x="94" y="258" fill="#151515" font-family="Arial, sans-serif" font-size="95" font-weight="700" letter-spacing="-6">Your files.</text>
+  <text x="94" y="350" fill="#151515" font-family="Arial, sans-serif" font-size="95" font-weight="700" letter-spacing="-6">Your models.</text>
+  <text x="94" y="442" fill="#1B5FE9" font-family="Georgia, serif" font-size="91" font-style="italic" font-weight="700" letter-spacing="-6">Your choice.</text>
+  <rect x="856" y="223" width="330" height="234" rx="17" fill="#FFF" stroke="#D6D6D0"/>
+  <text x="882" y="267" fill="#8A8A85" font-family="Arial, sans-serif" font-size="15" font-weight="700">SMART ROUTE</text>
+  <text x="882" y="318" fill="#171716" font-family="Arial, sans-serif" font-size="25" font-weight="700">qwen2.5-coder:3b</text>
+  <rect x="882" y="349" width="157" height="31" rx="8" fill="#E8F6D6"/>
+  <text x="896" y="371" fill="#3D7720" font-family="Arial, sans-serif" font-size="14" font-weight="700">LOCAL ONLY</text>
+  <text x="882" y="417" fill="#62625E" font-family="Arial, sans-serif" font-size="16">Review every change</text>
+  <text x="94" y="566" fill="#62625E" font-family="Arial, sans-serif" font-size="18">Local-first AI workspace · Open source</text>
+</svg>
