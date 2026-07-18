@@ -36,6 +36,7 @@
     "@types/react-dom": "^19.0.2",
     "electron": "^43.1.1",
     "electron-builder": "^26.15.3",
+    "electron-builder-squirrel-windows": "^26.15.3",
     "typescript": "^5.7.2",
     "vitest": "^4.1.10"
   },
