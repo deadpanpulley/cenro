@@ -1662,6 +1662,20 @@ function createWindow() {
   void window.loadFile(path.join(__dirname, "../renderer/index.html"));
 }
 
+// A second packaged copy should focus the existing Cenro window instead of
+// racing it for the same encrypted provider store and workspace settings.
+const hasSingleInstanceLock = app.requestSingleInstanceLock();
+
+if (!hasSingleInstanceLock) {
+  app.quit();
+} else {
+  app.on("second-instance", () => {
+    const primaryWindow = BrowserWindow.getAllWindows()[0];
+    if (!primaryWindow) return;
+    if (primaryWindow.isMinimized()) primaryWindow.restore();
+    primaryWindow.focus();
+  });
+
 app.whenReady().then(() => {
   taskStore = createTaskStore(app.getPath("userData"));
   providerStore = createProviderStore(app.getPath("userData"), createSecretProtector());
@@ -1863,6 +1877,7 @@ app.whenReady().then(() => {
   createWindow();
   app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
+}
 
 app.on("before-quit", () => terminalService?.dispose());
 app.on("window-all-closed", () => { if (process.platform !== "darwin") app.quit(); });

@@ -269,9 +269,9 @@ function localCouncilReceipt(council?: GatewayLocalCouncil) {
     ? `${localRoles}/${council.stages.length} sequential role${council.stages.length === 1 ? "" : "s"} completed locally`
     : `${localRoles}/${council.stages.length} local role${council.stages.length === 1 ? "" : "s"}; metadata-only fallback retained`;
   return {
-    name: "Local Context Council",
+    name: "Local project understanding",
     status: council.status === "completed" ? "complete" as const : "skipped" as const,
-    detail: `${outcome} · ${council.localCallsAttempted} local call${council.localCallsAttempted === 1 ? "" : "s"} · no source code sent to the council.${criteria ? ` Focus: ${shortTitle(criteria, 180)}` : ""}`
+    detail: `${outcome} · ${council.localCallsAttempted} local call${council.localCallsAttempted === 1 ? "" : "s"} · no source code sent to local analysis.${criteria ? ` Focus: ${shortTitle(criteria, 180)}` : ""}`
   };
 }
 
@@ -901,7 +901,7 @@ export function App() {
             providerId: studioProvider?.id
           }) as GatewayAnalysis;
         } catch (reason) {
-          setNotice(reason instanceof Error ? `Plan created without the local council: ${reason.message}` : "Plan created from workspace metadata; the local council was unavailable.");
+          setNotice(reason instanceof Error ? `Plan created without local project analysis: ${reason.message}` : "Plan created from workspace metadata; local project analysis was unavailable.");
         }
       }
       const selected = analysis?.selectedFiles ?? workspaceFiles.filter((entry) => entry.kind === "file" && (studioContextPaths.includes(entry.relativePath) || entry.relativePath === selectedFile)).slice(0, 6).map((entry) => ({
@@ -956,7 +956,7 @@ export function App() {
       });
       setStudioWebResearch(undefined);
       setStudioSidePanel("plan");
-      setNotice(analysis?.localCouncil?.status === "completed" ? "Local context council completed the plan. Review it before building." : "Plan ready. Review it before building.");
+      setNotice(analysis?.localCouncil?.status === "completed" ? "Local project analysis completed the plan. Review it before building." : "Plan ready. Review it before building.");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Cenro could not prepare a plan.");
     } finally {
@@ -1789,7 +1789,7 @@ function CenroStudio({
         </div> : plan ? <section className="studio-plan-canvas">
           <div className="studio-plan-kicker"><span className="studio-plan-orb"><Sparkles size={17} /></span><span>{planModeLabel[plan.mode]} brief · {formatTime(plan.createdAt)}</span></div>
           <h1>{plan.prompt}</h1>
-          <p className="studio-plan-lead">A bounded plan is ready. Cenro used local repository metadata{plan.analysis?.localCouncil?.status === "completed" ? " and the local context council" : ""}; no source code has been sent to a provider.</p>
+          <p className="studio-plan-lead">A bounded plan is ready. Cenro used local repository metadata{plan.analysis?.localCouncil?.status === "completed" ? " and local project understanding" : ""}; no source code has been sent to a provider.</p>
           <div className="studio-plan-columns">
             <section><span className="header-eyebrow">WHAT CENRO WILL CHECK</span><ul>{plan.diagnosis.map((item) => <li key={item}><CheckCircle2 size={15} />{item}</li>)}</ul></section>
             <section><span className="header-eyebrow">IMPLEMENTATION DIRECTION</span><ul>{plan.direction.map((item) => <li key={item}><ArrowRight size={15} />{item}</li>)}</ul></section>
@@ -1834,7 +1834,7 @@ function CenroStudio({
         {plan ? <>
           <section><span className="header-eyebrow">EVIDENCE</span><strong>{plan.analysis ? `${plan.analysis.repository.scannedFileCount} files mapped locally` : "Workspace context not yet mapped"}</strong><p>{plan.analysis?.localCouncil?.summary.selectionRationale ?? "Pin the files that matter most, then refine this plan."}</p></section>
           <section><span className="header-eyebrow">LIKELY FILES</span>{plan.files.length ? <ul className="studio-file-reasons">{plan.files.map((file) => <li key={file.path}><FileCode2 size={14} /><div><strong>{file.path}</strong><small>{file.reason}{file.characters ? ` · ${file.characters.toLocaleString()} chars` : ""}</small></div></li>)}</ul> : <p>No source files are required for this first pass.</p>}</section>
-          <section className="studio-web-evidence"><div className="studio-web-evidence-head"><span className="header-eyebrow">WEB EVIDENCE</span><button className="small-button" onClick={onResearchWeb} disabled={!plan.analysis || webResearchBusy}>{webResearchBusy ? <LoaderCircle className="spin" size={13} /> : <Globe2 size={13} />}{webResearch ? "Refresh" : "Search web"}</button></div>{webResearch ? <><p><ShieldCheck size={12} /> {webResearch.sources.length} cited source{webResearch.sources.length === 1 ? "" : "s"} · no workspace code searched</p><ul className="studio-web-sources">{webResearch.sources.map((source) => <li key={source.url}><button onClick={() => onOpenUrl(source.url)} title={source.url}><Globe2 size={13} /><div><strong>{source.title}</strong><small>{source.snippet || source.url}</small></div><ChevronRight size={13} /></button></li>)}</ul></> : <p>Search current docs, APIs, or product references. Cenro shows the exact query before it leaves this device.</p>}</section>
+          <section className="studio-web-evidence"><div className="studio-web-evidence-head"><span className="header-eyebrow">OPTIONAL WEB RESEARCH</span><button className="small-button" onClick={onResearchWeb} disabled={!plan.analysis || webResearchBusy}>{webResearchBusy ? <LoaderCircle className="spin" size={13} /> : <Globe2 size={13} />}{webResearch ? "Refresh" : "Search docs"}</button></div>{webResearch ? <><p><ShieldCheck size={12} /> {webResearch.sources.length} source{webResearch.sources.length === 1 ? "" : "s"} found · no workspace code searched</p><ul className="studio-web-sources">{webResearch.sources.map((source) => <li key={source.url}><button onClick={() => onOpenUrl(source.url)} title={source.url}><Globe2 size={13} /><div><strong>{source.title}</strong><small>{source.snippet || source.url}</small></div><ChevronRight size={13} /></button></li>)}</ul></> : <p>Need current documentation? Cenro shows the exact search first, then adds only useful source snippets to this task.</p>}</section>
           <section><span className="header-eyebrow">DONE WHEN</span><ul className="studio-checklist">{plan.acceptance.map((item) => <li key={item}><Circle size={12} />{item}</li>)}</ul></section>
         </> : <div className="studio-inspector-empty"><Sparkles size={20} /><strong>Your plan will show up here.</strong><p>It is a brief you can inspect before any provider call or code edit.</p></div>}
       </div> : sidePanel === "changes" ? <div className="studio-inspector-body studio-change-list">
@@ -1929,7 +1929,7 @@ function GatewayView({
             <button type="button" className={mode === "cloud" ? "selected" : ""} onClick={() => onSelectMode("cloud")}><Globe2 size={13} /> Cloud lead</button>
           </div>
           <div className="gateway-composer-actions">
-            <span>{routerModel || selectedModel ? <><Cpu size={13} /> Local council ready</> : <><TriangleAlert size={13} /> Local model optional</>}</span>
+            <span>{routerModel || selectedModel ? <><Cpu size={13} /> Local context ready</> : <><TriangleAlert size={13} /> Local model optional</>}</span>
             {configuredProvider ? <button className="gateway-primary" type="submit" disabled={!canDispatch || isRunning || isRouting}>{isRunning || isRouting ? <LoaderCircle className="spin" size={15} /> : <Send size={15} />}{isRouting ? "Preparing brief" : isRunning ? "Working" : "Review handoff"}</button> : <button type="button" className="gateway-primary" onClick={onOpenSettings}><Sparkles size={15} /> Connect cloud worker</button>}
           </div>
         </div>
@@ -2140,7 +2140,7 @@ function GatewayWebResearchModal({ draft, busy, onCancel, onApprove }: { draft: 
     <div className="route-title"><span className="route-orb external"><Globe2 size={18} /></span><div><span className="header-eyebrow">WEB RESEARCH RECEIPT</span><h2>Approve this exact web query.</h2></div><button className="route-close" onClick={onCancel} aria-label="Cancel web research"><X size={17} /></button></div>
     <p className="route-reason">Cenro will send only this query to DuckDuckGo and keep up to five citation snippets in memory for this plan. No workspace file, local path, API key, or code is part of this search.</p>
     <label className="gateway-web-query">Search query<textarea value={query} onChange={(event) => setQuery(event.target.value.slice(0, 300))} aria-label="Web research query" /><small>{query.length}/300 characters</small></label>
-    <div className="gateway-web-boundary"><ShieldCheck size={16} /><div><strong>External search is separate from the cloud coding call.</strong><p>After research returns, you can inspect its citations. A later cloud receipt will list any selected web evidence that may be attached to the coding brief.</p></div></div>
+    <div className="gateway-web-boundary"><ShieldCheck size={16} /><div><strong>External search is separate from the cloud coding call.</strong><p>After research returns, you can inspect its sources. A later cloud receipt will list any selected source snippets attached to the coding brief.</p></div></div>
     <label className="workspace-consent gateway-workspace-consent"><input type="checkbox" checked={approved} onChange={(event) => setApproved(event.target.checked)} /><span><strong>I approve sending this exact query to the web search provider.</strong><small>This does not send workspace code. Search snippets are treated as untrusted evidence, never instructions.</small></span></label>
     <div className="route-actions"><button className="small-button" onClick={onCancel} disabled={busy}>Cancel</button><button className="primary-button" disabled={!approved || !query.trim() || busy} onClick={() => onApprove(query)}>{busy ? <LoaderCircle className="spin" size={15} /> : <Globe2 size={15} />}{busy ? "Searching" : "Approve & search"}</button></div>
   </section></div>;
@@ -2166,11 +2166,11 @@ function GatewayHandoffModal({ handoff, onCancel, onApprove }: { handoff: Gatewa
       <div className="gateway-handoff-boundary-head"><ShieldCheck size={17} /><div><strong>These redacted local sources are eligible to leave your device.</strong><p>{receipt.dataBoundary.contextCharacters.toLocaleString()} context characters · {receipt.dataBoundary.selectedFiles.length} selected source{receipt.dataBoundary.selectedFiles.length === 1 ? "" : "s"} · {excluded} protected item{excluded === 1 ? "" : "s"} excluded before packaging.</p></div></div>
       <ul className="gateway-handoff-files">{receipt.dataBoundary.selectedFiles.slice(0, 10).map((file) => <li key={file.relativePath}><FileCode2 size={13} /><span>{file.relativePath}</span><small>{file.characters.toLocaleString()} chars · {file.estimatedTokens.toLocaleString()} tok{file.redactions ? ` · ${file.redactions} redacted` : ""}</small></li>)}</ul>
       {receipt.dataBoundary.selectedFiles.length > 10 && <small className="gateway-handoff-more">+ {receipt.dataBoundary.selectedFiles.length - 10} more source{receipt.dataBoundary.selectedFiles.length - 10 === 1 ? "" : "s"} in this receipt</small>}
-      {councilBrief.included && <small className="gateway-handoff-more">+ {councilBrief.characters.toLocaleString()} metadata-only Local Context Council characters ({councilBrief.estimatedTokens.toLocaleString()} est. tokens); no source code is included in this planning brief.</small>}
+      {councilBrief.included && <small className="gateway-handoff-more">+ {councilBrief.characters.toLocaleString()} local project analysis characters ({councilBrief.estimatedTokens.toLocaleString()} est. tokens); no source code is included in this planning brief.</small>}
       {webResearch.included && <small className="gateway-handoff-more">+ {webResearch.sourceCount} separately-consented web citation{webResearch.sourceCount === 1 ? "" : "s"} ({webResearch.characters.toLocaleString()} characters · {webResearch.estimatedTokens.toLocaleString()} est. tokens). No workspace code was used to search the web.</small>}
     </div>
     <section className="gateway-preflight"><span className="header-eyebrow">COST PREFLIGHT</span><div><strong>{maxCost === undefined ? `${preflight.maximumBillableTokens.toLocaleString()} tokens maximum` : `${formatCurrency(maxCost)} maximum estimate`}</strong><small>{preflight.estimateStatus === "priced-estimate" ? "Estimate only—not actual spend. Actual usage is recorded only if the provider returns it." : "No price card is configured, so Cenro will record provider usage without inventing a dollar amount."}</small></div></section>
-    {council && <section className="gateway-preflight gateway-council-receipt"><span className="header-eyebrow">LOCAL CONTEXT COUNCIL</span><div><strong>{council.status === "completed" ? `${councilLocalRoles} sequential local role${councilLocalRoles === 1 ? "" : "s"} prepared this receipt` : "Metadata-only local fallback retained"}</strong><small>{council.model ? `${council.model} made ${council.localCallsAttempted} local call${council.localCallsAttempted === 1 ? "" : "s"}. ` : "No installed local council model was used. "}No source code was sent to the council. {shortTitle(council.summary.selectionRationale, 180)}</small></div></section>}
+    {council && <section className="gateway-preflight gateway-council-receipt"><span className="header-eyebrow">LOCAL PROJECT ANALYSIS</span><div><strong>{council.status === "completed" ? `${councilLocalRoles} sequential local role${councilLocalRoles === 1 ? "" : "s"} prepared this receipt` : "Metadata-only local fallback retained"}</strong><small>{council.model ? `${council.model} made ${council.localCallsAttempted} local call${council.localCallsAttempted === 1 ? "" : "s"}. ` : "No installed local analysis model was used. "}No source code was sent to local analysis. {shortTitle(council.summary.selectionRationale, 180)}</small></div></section>}
     <label className="workspace-consent gateway-workspace-consent"><input type="checkbox" checked={includeWorkspace} onChange={(event) => setIncludeWorkspace(event.target.checked)} /><span><strong>I approve sending the listed redacted context to {receipt.provider.label}.</strong><small>This consent is single-use and expires at {formatTime(receipt.expiresAt)}. Changing the task, provider, model, or context requires a new receipt.</small></span></label>
     {budgetBlocked && <p className="gateway-budget-warning"><TriangleAlert size={14} /> This run exceeds its configured budget cap. Create a smaller receipt or raise the cap before approving.</p>}
     <div className="route-actions"><button className="small-button" onClick={onCancel}>Cancel</button><button className="primary-button" disabled={!includeWorkspace || budgetBlocked} onClick={onApprove}><ShieldCheck size={15} /> Approve &amp; call cloud lead</button></div>
